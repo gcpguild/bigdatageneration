@@ -14,12 +14,12 @@ import logging
 
 # Set the GitLab access token and repository URL
 GITLAB_ACCESS_TOKEN = os.environ.get('GITLAB_ACCESS_TOKEN')
-GITLAB_BASE_URL = 'https://gitlab.devops.telekom.de/'
+GITLAB_BASE_URL = 'https://gitlab.devops.<project>.com'
 
 # Get the directory containing the HQL files
-HQL_FILES_PATH_GITLAB = 'app/CJA_hive/src/main/hive/cja/hql/db_cj_core_cdsc'
+HQL_FILES_PATH_GITLAB = 'APP_HQL'
 # Get the directory containing the HQL files
-HQL_DIR_PATH = 'app/CJA_hive/src/main/hive/cja/hql/db_cj_core_cdsc'
+HQL_DIR_PATH = 'PATH_HQL'
 
 # Define the patterns to match in the file names
 patterns = ['hub', 'lnk', 'sat']
@@ -37,7 +37,7 @@ parser.add_argument('-n', '--row_count', type=int, default=10, help="Number of r
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 N_ROWS = args.row_count
 
-SOURCE = ['cai', 'crmt', 'dwhk', 'dwhm', 'idm', 'ikdb', 'ipmrs', 'kkmf', 'mfref', 'mtv', 'oneapp', 'push', 'rawvault', 'ribs', 'skswms', 'td', 'tdgsr', 'vao', 'webtrekk', 'zs_anlage_ratenplan', 'zs_deaktivierung_ratenplan', 'zs_mahndaten', 'zs_rueckbelastung']
+SOURCE = ['Real Time', 'SaleForce', 'Kafka', 'AWS', 'Azure', 'GCP', 'Cloudera']
 logger.info(f"Using CDSC Source list : {','.join(SOURCE)}")
 
 COL_TYPES = ['id', 'ps', 'hk', 'source']
@@ -199,9 +199,8 @@ class DataGenerator:
 def main():
   for hqfile in HQLFILES:
         
-        # for testing only one file  hqfile = 'dwhm_to_rawvault_mf_invoice_definition_mf_invoice_header_lnk.hql'
+        # for testing only one file  hqfile = 'HQLFile1.hql'
         # actual hqlfile
-        hqfile = 'dwhm_to_rawvault_mf_invoice_definition_mf_invoice_header_lnk.hql'
         logger.info(f"HQL File used:\n {hqfile}")
 
         # Create an instance of the DataGenerator class
@@ -211,7 +210,6 @@ def main():
            generator.generate_data_frame(hqfile)
         except Exception as e:
             logging.error(f"Error generating CSV file : {e}")
-        break
 
 if __name__ == '__main__':
     main()
